@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generate/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  ADMIN
+  AGENT
+  CUSTOMER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ==========================================
+// USER
+// ==========================================
+
+model User {
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(CUSTOMER)
+  isActive Boolean  @default(true)
+  
+  // Tickets created by this user
+  createdTickets Ticket[] @relation("CustomerTickets")
+
+  // Tickets assigned to this user as an agent
+  assignedTickets Ticket[] @relation("AgentTickets")
+
+  comments      Comment[]
+  ticketHistory TicketHistory[]
+  refreshTokens RefreshToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  previouslyAssignedTicketHistory TicketHistory[] @relation("PreviousAgentAssignments") 
+  newlyAssignedTicketHistory      TicketHistory[] @relation("NewAgentAssignments")  
+
+  @@index([role])
+}
+
+// ==========================================
+// TICKET
+// ==========================================
+
+model Ticket {
+  id           String         @id @default(cuid())
+  ticketNumber String         @unique
+  title        String
+  description  String         @db.Text
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
+  category     String
+
+  // Customer relationship
+  customerId String
+  customer   User   @relation("CustomerTickets", fields: [customerId], references: [id], onDelete: Restrict)
+
+  // Agent relationship (optional until assigned)
+  assignedAgentId String?
+  assignedAgent   User?   @relation("AgentTickets", fields: [assignedAgentId], references: [id], onDelete: SetNull)
+
+  comments      Comment[]
+  ticketHistory TicketHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([customerId])
+  @@index([assignedAgentId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+  @@index([status, priority])
+  @@index([assignedAgentId, status])
+}
+
+// ==========================================
+// COMMENT
+// ==========================================
+
+model Comment {
+  id      String @id @default(cuid())
+  message String @db.Text
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+
+  @@index([ticketId, createdAt])
+  @@index([userId])
+}
+
+// ==========================================
+// TICKET HISTORY
+// ==========================================
+
+model TicketHistory {
+  id String @id @default(cuid())
+
+  oldStatus TicketStatus?
+  newStatus TicketStatus?
+
+  oldPriority TicketPriority?
+  newPriority TicketPriority?
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  changedById String
+  changedBy   User   @relation(fields: [changedById], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+
+  oldAssignedAgentId String?
+  newAssignedAgentId String?
+
+  oldAssignedAgent User? @relation("PreviousAgentAssignments", fields: [oldAssignedAgentId], references: [id], onDelete: SetNull)
+  newAssignedAgent User? @relation("NewAgentAssignments", fields: [newAssignedAgentId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+  @@index([changedById])
+  @@index([oldAssignedAgentId])
+  @@index([newAssignedAgentId])
+}
+
+// ==========================================
+// REFRESH TOKEN
+// ==========================================
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+*{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+  font-family: Inter,sans-serif;
+}
+
+.password-input::-ms-reveal,
+.password-input::-ms-clear {
+  display: none;
+}
