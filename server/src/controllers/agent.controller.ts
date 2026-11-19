@@ -1,13 +1,41 @@
 import type { Request, Response } from "express";
 
 import {
+  createAgent,
   getAllAgents,
   getAgentDetails,
   updateAgentStatus,
 } from "../services/agent.service.js";
 
-import {AppError} from "../utils/app-error.js";
+import { AppError } from "../utils/app-error.js";
+import { createAgentSchema } from "../validators/agent.validator.js";
 import { updateAgentStatusSchema } from "../validators/agent-status.validator.js";
+
+export const createAgentController = async (
+  req: Request,
+  res: Response
+) => {
+  const parsed = createAgentSchema.safeParse(req.body);
+
+  if (!parsed.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: parsed.error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      })),
+    });
+  }
+
+  const agent = await createAgent(parsed.data);
+
+  return res.status(201).json({
+    success: true,
+    message: "Agent created successfully",
+    data: agent,
+  });
+};
 
 export const getAgentsController = async (
   _req: Request,

@@ -2,6 +2,7 @@
 import { useState, type FormEvent } from "react";
 import { Send, MessageSquare, User } from "lucide-react";
 import type { Comment } from "../../types/comment.types";
+import { ShimmerLabel } from "../common/LoadingShimmer";
 
 interface TicketConversationProps {
   comments: Comment[];
@@ -186,7 +187,11 @@ const TicketConversation = ({
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send size={15} />
-            {isSubmitting ? "Sending..." : "Send Reply"}
+            {isSubmitting ? (
+              <ShimmerLabel label="Sending reply" className="h-4 w-16" />
+            ) : (
+              "Send Reply"
+            )}
           </button>
         </div>
       </form>

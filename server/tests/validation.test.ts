@@ -7,6 +7,7 @@ import {
 import { ticketQuerySchema } from "../src/validators/ticket-query.validator";
 import { createTicketSchema } from "../src/validators/ticket.validator";
 import { updateAgentStatusSchema } from "../src/validators/agent-status.validator";
+import { createAgentSchema } from "../src/validators/agent.validator";
 
 describe("request validation", () => {
   it("normalizes registration email and rejects passwords exceeding bcrypt's byte limit", () => {
@@ -80,5 +81,29 @@ describe("request validation", () => {
     expect(updateAgentStatusSchema.safeParse({ isActive: "false" }).success).toBe(
       false
     );
+  });
+
+  it("validates and normalizes agent creation details", () => {
+    expect(
+      createAgentSchema.safeParse({
+        name: " New Agent ",
+        email: " NEW@Example.com ",
+        password: "secure-password",
+      })
+    ).toMatchObject({
+      success: true,
+      data: {
+        name: "New Agent",
+        email: "new@example.com",
+      },
+    });
+
+    expect(
+      createAgentSchema.safeParse({
+        name: "A",
+        email: "invalid",
+        password: "short",
+      }).success
+    ).toBe(false);
   });
 });

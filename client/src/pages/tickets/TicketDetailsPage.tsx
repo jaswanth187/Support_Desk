@@ -11,6 +11,10 @@ import agentService from "../../services/agent.service";
 import type { Agent } from "../../types/agent.types";
 import TicketConversation from "../../components/tickets/TicketConversation";
 import TicketActivity from "../../components/tickets/TicketActivity";
+import {
+    ShimmerBlock,
+    ShimmerLabel,
+} from "../../components/common/LoadingShimmer";
 
 const formatDate = (date: string) => {
     return new Date(date).toLocaleString("en-IN", {
@@ -216,11 +220,7 @@ const TicketDetailsPage = () => {
     };
 
     if (isLoading && id) {
-        return (
-            <div className="flex min-h-64 items-center justify-center">
-                <p className="text-sm text-gray-500">Loading ticket...</p>
-            </div>
-        );
+        return <TicketDetailsSkeleton />;
     }
 
     if (displayError || !ticket) {
@@ -318,9 +318,10 @@ const TicketDetailsPage = () => {
                         </select>
 
                         {isUpdatingStatus && (
-                            <p className="mt-2 text-xs text-gray-500">
-                                Updating status...
-                            </p>
+                            <ShimmerLabel
+                                label="Updating ticket status"
+                                className="mt-2 h-3 w-28"
+                            />
                         )}
 
                     </div>
@@ -349,9 +350,10 @@ const TicketDetailsPage = () => {
                         </select>
 
                         {isUpdatingPriority && (
-                            <p className="mt-2 text-xs text-gray-500">
-                                Updating priority...
-                            </p>
+                            <ShimmerLabel
+                                label="Updating ticket priority"
+                                className="mt-2 h-3 w-28"
+                            />
                         )}
 
                     </div>
@@ -388,11 +390,17 @@ const TicketDetailsPage = () => {
                     </select>
 
                     {isLoadingAgents && (
-                        <p className="mt-1 text-xs text-gray-500">Loading agents...</p>
+                        <ShimmerLabel
+                            label="Loading agents"
+                            className="mt-1 h-3 w-24"
+                        />
                     )}
 
                     {isAssigning && (
-                        <p className="mt-1 text-xs text-gray-500">Updating assignment...</p>
+                        <ShimmerLabel
+                            label="Updating ticket assignment"
+                            className="mt-1 h-3 w-32"
+                        />
                     )}
 
 
@@ -501,5 +509,31 @@ const TicketDetailsPage = () => {
         </div>
     );
 };
+
+const TicketDetailsSkeleton = () => (
+    <div
+        className="space-y-6"
+        role="status"
+        aria-busy="true"
+        aria-label="Loading ticket details"
+    >
+        <div className="space-y-3">
+            <ShimmerBlock className="h-4 w-32" />
+            <ShimmerBlock className="h-8 w-64 max-w-full" />
+            <ShimmerBlock className="h-4 w-80 max-w-full" />
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="space-y-6 lg:col-span-2">
+                <div className="h-56 w-full animate-pulse rounded-xl border border-slate-200 bg-white" />
+                <div className="h-48 w-full animate-pulse rounded-xl border border-slate-200 bg-white" />
+            </div>
+            <div className="space-y-6">
+                <div className="h-80 w-full animate-pulse rounded-xl border border-slate-200 bg-white" />
+                <div className="h-48 w-full animate-pulse rounded-xl border border-slate-200 bg-white" />
+            </div>
+        </div>
+        <div className="h-64 w-full animate-pulse rounded-xl border border-slate-200 bg-white" />
+    </div>
+);
 
 export default TicketDetailsPage;

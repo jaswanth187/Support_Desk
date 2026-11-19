@@ -1,5 +1,32 @@
 import prisma from "../config/prisma.js";
 
+export const findUserByEmail = async (email: string) => {
+  return prisma.user.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+};
+
+export const createAgent = async (data: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  return prisma.user.create({
+    data: {
+      ...data,
+      role: "AGENT",
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      isActive: true,
+      createdAt: true,
+    },
+  });
+};
+
 export const getAgentsWithWorkloads = async () => {
   const [agents, workloadGroups] = await prisma.$transaction([
     prisma.user.findMany({

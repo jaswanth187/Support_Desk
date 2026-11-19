@@ -33,6 +33,7 @@ import type {
 import type { AdminDashboardData } from "../../types/admin-dashboard.types";
 import StatCard from "../../components/dashboard/StatCard";
 import TicketStatusBadge from "../../components/dashboard/TicketStatusBadge";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 
 const statusColors: Record<TicketStatus, string> = {
   OPEN: "#3B82F6",
@@ -92,19 +93,7 @@ const AdminDashboard = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-80 items-center justify-center">
-        <div className="text-center">
-          <RefreshCw
-            className="mx-auto animate-spin text-blue-600"
-            size={28}
-          />
-          <p className="mt-3 text-sm text-slate-500">
-            Loading dashboard...
-          </p>
-        </div>
-      </div>
-    );
+    return <AdminDashboardSkeleton />;
   }
 
   if (!dashboard) {
@@ -124,7 +113,11 @@ const AdminDashboard = () => {
           disabled={isRefreshing}
           className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
         >
-          Try again
+          {isRefreshing ? (
+            <ShimmerLabel label="Retrying dashboard request" className="h-4 w-16" />
+          ) : (
+            "Try again"
+          )}
         </button>
       </div>
     );
@@ -174,11 +167,14 @@ const AdminDashboard = () => {
           disabled={isRefreshing}
           className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <RefreshCw
-            size={16}
-            className={isRefreshing ? "animate-spin" : ""}
-          />
-          {isRefreshing ? "Refreshing..." : "Refresh"}
+          {isRefreshing ? (
+            <ShimmerLabel label="Refreshing dashboard" className="h-4 w-16" />
+          ) : (
+            <>
+              <RefreshCw size={16} />
+              Refresh
+            </>
+          )}
         </button>
       </div>
 
@@ -441,5 +437,40 @@ const AdminDashboard = () => {
     </div>
   );
 };
+
+const AdminDashboardSkeleton = () => (
+  <div
+    className="space-y-8"
+    role="status"
+    aria-busy="true"
+    aria-label="Loading admin dashboard"
+  >
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="space-y-2">
+        <div className="h-7 w-56 animate-pulse rounded bg-slate-200" />
+        <div className="h-4 w-80 max-w-full animate-pulse rounded bg-slate-100" />
+      </div>
+      <div className="h-10 w-28 animate-pulse rounded-lg bg-slate-100" />
+    </div>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {Array.from({ length: 4 }, (_, index) => (
+        <div
+          key={index}
+          className="h-36 animate-pulse rounded-xl border border-slate-200 bg-white"
+        />
+      ))}
+    </div>
+    <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
+      {Array.from({ length: 2 }, (_, index) => (
+        <div
+          key={index}
+          className="h-96 animate-pulse rounded-xl border border-slate-200 bg-white"
+        />
+      ))}
+    </div>
+    <div className="h-80 animate-pulse rounded-xl border border-slate-200 bg-white" />
+    <div className="h-72 animate-pulse rounded-xl border border-slate-200 bg-white" />
+  </div>
+);
 
 export default AdminDashboard;

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { ShimmerLabel } from "../common/LoadingShimmer";
 import { useAuth } from "../../context/AuthContext";
 import { ticketService } from "../../services/ticket.service";
 
@@ -212,7 +213,7 @@ const TicketListPage = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" aria-busy={isLoading}>
 
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -233,11 +234,14 @@ const TicketListPage = () => {
           disabled={isLoading}
           className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
         >
-          <RefreshCw
-            size={16}
-            className={isLoading ? "animate-spin" : ""}
-          />
-          Refresh
+          {isLoading ? (
+            <ShimmerLabel label="Refreshing tickets" className="h-4 w-16" />
+          ) : (
+            <>
+              <RefreshCw size={16} />
+              Refresh
+            </>
+          )}
         </button>
       </div>
 

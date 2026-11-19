@@ -17,6 +17,7 @@ import { toast } from "sonner";
 
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/auth.service";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 
 const getErrorMessage = (error: unknown): string => {
   if (isAxiosError(error)) {
@@ -294,7 +295,11 @@ const ProfilePage = () => {
                 className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Save size={16} />
-                {isSavingProfile ? "Saving..." : "Save Changes"}
+                {isSavingProfile ? (
+                  <ShimmerLabel label="Saving profile" className="h-4 w-20" />
+                ) : (
+                  "Save Changes"
+                )}
               </button>
 
               <button
@@ -380,7 +385,14 @@ const ProfilePage = () => {
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <LockKeyhole size={16} />
-            {isChangingPassword ? "Updating..." : "Change Password"}
+            {isChangingPassword ? (
+              <ShimmerLabel
+                label="Updating password"
+                className="h-4 w-20"
+              />
+            ) : (
+              "Change Password"
+            )}
           </button>
         </form>
       </section>

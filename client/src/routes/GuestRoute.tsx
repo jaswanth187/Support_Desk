@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import PageLoadingSkeleton from "../components/common/PageLoadingSkeleton";
 
 const GuestRoute = () =>{
     const {isAuthenticated, isLoading, user} = useAuth();
 
     if(isLoading){
-        return <div>Loading...</div>
+        return <PageLoadingSkeleton />;
     }
 
     if(isAuthenticated && user){

@@ -10,6 +10,7 @@ import {
 } from "../../schemas/ticket.schema";
 
 import { ticketService } from "../../services/ticket.service";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 
 const CreateTicketPage = () => {
   const navigate = useNavigate();
@@ -187,7 +188,11 @@ const CreateTicketPage = () => {
           >
             <Send size={16} />
 
-            {isSubmitting ? "Creating..." : "Submit Ticket"}
+            {isSubmitting ? (
+              <ShimmerLabel label="Creating ticket" className="h-4 w-20" />
+            ) : (
+              "Submit Ticket"
+            )}
           </button>
 
         </div>

@@ -8,6 +8,7 @@ import { Headphones } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import FormField from "../../components/common/FormField";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 
 import {
   registerSchema,
@@ -163,9 +164,14 @@ const RegisterPage = () => {
               disabled={isSubmitting}
               className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isSubmitting
-                ? "Creating account..."
-                : "Create account"}
+              {isSubmitting ? (
+                <ShimmerLabel
+                  label="Creating account"
+                  className="h-4 w-24"
+                />
+              ) : (
+                "Create account"
+              )}
             </button>
           </form>
 

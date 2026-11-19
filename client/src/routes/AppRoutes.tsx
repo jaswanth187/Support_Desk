@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import RoleRoute from "./RoleRoute";
 import { UnauthorizedPage, NotFoundPage } from "../pages/PlaceholderPages";
 import GuestRoute from "./GuestRoute";
+import PageLoadingSkeleton from "../components/common/PageLoadingSkeleton";
 
 const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));
@@ -43,17 +44,7 @@ const DashboardRedirect = () => {
 const AppRoutes = () => {
     return (
         <BrowserRouter>
-            <Suspense
-                fallback={
-                    <div
-                        className="flex min-h-64 items-center justify-center"
-                        role="status"
-                        aria-live="polite"
-                    >
-                        Loading page...
-                    </div>
-                }
-            >
+            <Suspense fallback={<PageLoadingSkeleton />}>
                 <Routes>
                     {/* Public routes */}
                     <Route element={<GuestRoute />}>

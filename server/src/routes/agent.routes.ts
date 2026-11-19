@@ -4,6 +4,7 @@ import { authenticate } from "../middlwares/authenticate";
 import { authorize } from "../middlwares/authorize.js";
 
 import {
+  createAgentController,
   getAgentsController,
   getAgentByIdController,
   updateAgentStatusController,
@@ -14,6 +15,7 @@ const router = Router();
 router.use(authenticate);
 router.use(authorize("ADMIN"));
 
+router.post("/", createAgentController);
 router.get("/", getAgentsController);
 router.get("/:id", getAgentByIdController);
 router.patch("/:id/status", updateAgentStatusController);

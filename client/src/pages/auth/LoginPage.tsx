@@ -8,6 +8,7 @@ import { Headphones } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import FormField from "../../components/common/FormField";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 
 import {
     loginSchema,
@@ -156,7 +157,11 @@ const LoginPage = () => {
                             disabled={isSubmitting}
                             className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {isSubmitting ? "Signing in..." : "Sign in"}
+                            {isSubmitting ? (
+                                <ShimmerLabel label="Signing in" className="h-4 w-20" />
+                            ) : (
+                                "Sign in"
+                            )}
                         </button>
                     </form>
 

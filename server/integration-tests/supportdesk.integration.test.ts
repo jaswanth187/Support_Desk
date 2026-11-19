@@ -145,6 +145,55 @@ describe("PostgreSQL-backed SupportDesk workflows", () => {
     );
   });
 
+  it("allows an admin to create an agent, rejects duplicate email, and allows agent login", async () => {
+    const adminSession = await authenticate(admin.email);
+    const email = `${marker}-created-agent@example.test`;
+    const agentPassword = "Created-agent-password-1";
+
+    const createdResponse = await withAuth(adminSession.accessToken)
+      .post("/api/agents")
+      .send({
+        name: "Created Integration Agent",
+        email,
+        password: agentPassword,
+        role: "ADMIN",
+      })
+      .expect(201);
+
+    const createdAgent = createdResponse.body.data as TestUser;
+    createdUserIds.push(createdAgent.id);
+    expect(createdResponse.body.data).toMatchObject({
+      name: "Created Integration Agent",
+      email,
+      isActive: true,
+    });
+
+    const storedAgent = await prisma.user.findUniqueOrThrow({
+      where: { id: createdAgent.id },
+    });
+    expect(storedAgent.role).toBe("AGENT");
+    expect(storedAgent.password).not.toBe(agentPassword);
+
+    await withAuth(adminSession.accessToken)
+      .post("/api/agents")
+      .send({
+        name: "Duplicate Integration Agent",
+        email,
+        password: agentPassword,
+      })
+      .expect(409);
+
+    const loginResponse = await request(app)
+      .post("/api/auth/login")
+      .set("Origin", clientOrigin)
+      .send({ email, password: agentPassword })
+      .expect(200);
+    expect(loginResponse.body.data.user).toMatchObject({
+      id: createdAgent.id,
+      role: "AGENT",
+    });
+  });
+
   afterAll(async () => {
     if (createdUserIds.length > 0) {
       await prisma.ticket.deleteMany({

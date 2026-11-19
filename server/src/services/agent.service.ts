@@ -1,7 +1,25 @@
 import type { TicketStatus } from "../../generate/prisma/client.js";
 
 import * as agentRepository from "../respositories/agent.repository.js";
-import {AppError} from "../utils/app-error.js";
+import { AppError } from "../utils/app-error.js";
+import { hashPassword } from "../utils/password.js";
+import type { CreateAgentInput } from "../validators/agent.validator.js";
+
+export const createAgent = async (input: CreateAgentInput) => {
+  const existingUser = await agentRepository.findUserByEmail(input.email);
+
+  if (existingUser) {
+    throw new AppError(409, "An account with this email already exists");
+  }
+
+  const password = await hashPassword(input.password);
+
+  return agentRepository.createAgent({
+    name: input.name,
+    email: input.email,
+    password,
+  });
+};
 
 export const getAllAgents = async () => {
   const { agents, workloadGroups } =

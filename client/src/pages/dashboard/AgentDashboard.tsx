@@ -22,6 +22,7 @@ import type { CustomerDashboardData } from "../../types/customer-dashboard.types
 
 import StatCard from "../../components/dashboard/StatCard";
 import TicketStatusBadge from "../../components/dashboard/TicketStatusBadge";
+import { ShimmerLabel } from "../../components/common/LoadingShimmer";
 import PriorityBadge from "../../components/tickets/PriorityBadge";
 
 import { useAuth } from "../../context/AuthContext";
@@ -134,7 +135,12 @@ const AgentDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-8 animate-pulse">
+      <div
+        className="space-y-8 animate-pulse"
+        role="status"
+        aria-busy="true"
+        aria-label="Loading agent dashboard"
+      >
         <div className="space-y-2">
           <div className="h-8 w-64 rounded-lg bg-slate-200" />
           <div className="h-4 w-80 max-w-full rounded bg-slate-100" />
@@ -173,9 +179,14 @@ const AgentDashboard = () => {
 
         <button
           onClick={fetchDashboard}
+          disabled={isRefreshing}
           className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
         >
-          Try again
+          {isRefreshing ? (
+            <ShimmerLabel label="Retrying dashboard request" className="h-4 w-16" />
+          ) : (
+            "Try again"
+          )}
         </button>
       </div>
     );
@@ -202,11 +213,14 @@ const AgentDashboard = () => {
             disabled={isRefreshing}
             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <RefreshCw
-              size={16}
-              className={isRefreshing ? "animate-spin" : ""}
-            />
-            {isRefreshing ? "Refreshing..." : "Refresh"}
+            {isRefreshing ? (
+              <ShimmerLabel label="Refreshing dashboard" className="h-4 w-16" />
+            ) : (
+              <>
+                <RefreshCw size={16} />
+                Refresh
+              </>
+            )}
           </button>
 
           <Link
