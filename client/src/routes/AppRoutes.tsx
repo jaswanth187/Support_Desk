@@ -6,6 +6,7 @@ import RoleRoute from "./RoleRoute";
 import { UnauthorizedPage, NotFoundPage } from "../pages/PlaceholderPages";
 import GuestRoute from "./GuestRoute";
 import PageLoadingSkeleton from "../components/common/PageLoadingSkeleton";
+import HomePage from "../pages/HomePage";
 
 const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));
@@ -46,6 +47,8 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Suspense fallback={<PageLoadingSkeleton />}>
                 <Routes>
+                    <Route path="/" element={<HomePage />} />
+
                     {/* Public routes */}
                     <Route element={<GuestRoute />}>
                         <Route path="/login" element={<LoginPage />} />
