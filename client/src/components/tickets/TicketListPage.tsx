@@ -288,7 +288,7 @@ const TicketListPage = () => {
             <ChevronDown
               aria-hidden="true"
               size={16}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
             />
           </div>
 
@@ -309,7 +309,7 @@ const TicketListPage = () => {
             <ChevronDown
               aria-hidden="true"
               size={16}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
             />
           </div>
 
@@ -329,7 +329,7 @@ const TicketListPage = () => {
             <ChevronDown
               aria-hidden="true"
               size={16}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
             />
           </div>
 
@@ -358,7 +358,7 @@ const TicketListPage = () => {
             <ChevronDown
               aria-hidden="true"
               size={16}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
             />
           </div>
 
@@ -563,7 +563,7 @@ const TicketListPage = () => {
                     handlePageSizeChange(Number(event.target.value))
                   }
                   disabled={isLoading}
-                  className="appearance-none rounded-lg border border-slate-200 py-1.5 pl-2 pr-8 text-sm text-slate-600 outline-none focus:border-blue-500"
+                  className="appearance-none rounded-lg border border-slate-200 py-1.5 pl-2 pr-9 text-sm text-slate-600 outline-none focus:border-blue-500"
                 >
                   <option value={10}>10 / page</option>
                   <option value={20}>20 / page</option>
@@ -572,7 +572,7 @@ const TicketListPage = () => {
                 <ChevronDown
                   aria-hidden="true"
                   size={14}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500"
+                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
                 />
               </div>
             </div>

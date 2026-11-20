@@ -1,7 +1,14 @@
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, User, Tag, Clock } from "lucide-react";
+import {
+    ArrowLeft,
+    Calendar,
+    ChevronDown,
+    User,
+    Tag,
+    Clock,
+} from "lucide-react";
 import { toast } from "sonner";
 import { ticketService } from "../../services/ticket.service";
 import type { Ticket } from "../../types/ticket.types";
@@ -288,34 +295,41 @@ const TicketDetailsPage = () => {
                             Update status
                         </label>
 
-                        <select
-                            id="ticket-status"
-                            value={ticket.status}
-                            disabled={isUpdatingStatus || ticket.status === "CLOSED"}
-                            onChange={(e) =>
-                                handleStatusChange(e.target.value as TicketStatus)
-                            }
-                            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-gray-100"
-                        >
-                            <option value={ticket.status} disabled>
-                                {ticket.status.replace("_", " ")} (Current)
-                            </option>
+                        <div className="relative">
+                            <select
+                                id="ticket-status"
+                                value={ticket.status}
+                                disabled={isUpdatingStatus || ticket.status === "CLOSED"}
+                                onChange={(e) =>
+                                    handleStatusChange(e.target.value as TicketStatus)
+                                }
+                                className="w-full appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-12 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-gray-100"
+                            >
+                                <option value={ticket.status} disabled>
+                                    {ticket.status.replace("_", " ")} (Current)
+                                </option>
 
-                            {ticket.status === "OPEN" && (
-                                <option value="IN_PROGRESS">In Progress</option>
-                            )}
-
-                            {ticket.status === "IN_PROGRESS" && (
-                                <option value="RESOLVED">Resolved</option>
-                            )}
-
-                            {ticket.status === "RESOLVED" && (
-                                <>
+                                {ticket.status === "OPEN" && (
                                     <option value="IN_PROGRESS">In Progress</option>
-                                    <option value="CLOSED">Closed</option>
-                                </>
-                            )}
-                        </select>
+                                )}
+
+                                {ticket.status === "IN_PROGRESS" && (
+                                    <option value="RESOLVED">Resolved</option>
+                                )}
+
+                                {ticket.status === "RESOLVED" && (
+                                    <>
+                                        <option value="IN_PROGRESS">In Progress</option>
+                                        <option value="CLOSED">Closed</option>
+                                    </>
+                                )}
+                            </select>
+                            <ChevronDown
+                                aria-hidden="true"
+                                size={18}
+                                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"
+                            />
+                        </div>
 
                         {isUpdatingStatus && (
                             <ShimmerLabel
@@ -334,20 +348,27 @@ const TicketDetailsPage = () => {
                             Update priority
                         </label>
 
-                        <select
-                            id="ticket-priority"
-                            value={ticket.priority}
-                            disabled={isUpdatingPriority || ticket.status === "CLOSED"}
-                            onChange={(e) =>
-                                handlePriorityChange(e.target.value as TicketPriority)
-                            }
-                            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-gray-100"
-                        >
-                            <option value="LOW">Low</option>
-                            <option value="MEDIUM">Medium</option>
-                            <option value="HIGH">High</option>
-                            <option value="URGENT">Urgent</option>
-                        </select>
+                        <div className="relative">
+                            <select
+                                id="ticket-priority"
+                                value={ticket.priority}
+                                disabled={isUpdatingPriority || ticket.status === "CLOSED"}
+                                onChange={(e) =>
+                                    handlePriorityChange(e.target.value as TicketPriority)
+                                }
+                                className="w-full appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-12 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-gray-100"
+                            >
+                                <option value="LOW">Low</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="HIGH">High</option>
+                                <option value="URGENT">Urgent</option>
+                            </select>
+                            <ChevronDown
+                                aria-hidden="true"
+                                size={18}
+                                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"
+                            />
+                        </div>
 
                         {isUpdatingPriority && (
                             <ShimmerLabel
@@ -369,25 +390,32 @@ const TicketDetailsPage = () => {
                         Assigned Agent
                     </label>
 
-                    <select
-                        id="assigned-agent"
-                        value={ticket.assignedAgentId ?? ""}
-                        onChange={(e) => handleAgentAssignment(e.target.value)}
-                        disabled={
-                            isLoadingAgents ||
-                            isAssigning ||
-                            ticket.status === "CLOSED"
-                        }
-                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                    >
-                        <option value="">Unassigned</option>
+                    <div className="relative">
+                        <select
+                            id="assigned-agent"
+                            value={ticket.assignedAgentId ?? ""}
+                            onChange={(e) => handleAgentAssignment(e.target.value)}
+                            disabled={
+                                isLoadingAgents ||
+                                isAssigning ||
+                                ticket.status === "CLOSED"
+                            }
+                            className="w-full appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-12 text-sm outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+                        >
+                            <option value="">Unassigned</option>
 
-                        {agents.map((agent) => (
-                            <option key={agent.id} value={agent.id}>
-                                {agent.name} ({agent.email})
-                            </option>
-                        ))}
-                    </select>
+                            {agents.map((agent) => (
+                                <option key={agent.id} value={agent.id}>
+                                    {agent.name} ({agent.email})
+                                </option>
+                            ))}
+                        </select>
+                        <ChevronDown
+                            aria-hidden="true"
+                            size={18}
+                            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"
+                        />
+                    </div>
 
                     {isLoadingAgents && (
                         <ShimmerLabel

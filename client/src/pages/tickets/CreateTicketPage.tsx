@@ -1,6 +1,6 @@
 
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, ChevronDown, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner"
@@ -131,17 +131,24 @@ const CreateTicketPage = () => {
               Category
             </label>
 
-            <select
-              id="ticket-category"
-              {...register("category")}
-              className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
-            >
-              <option value="">Select category</option>
-              <option value="Account">Account</option>
-              <option value="Billing">Billing</option>
-              <option value="Technical">Technical</option>
-              <option value="General">General</option>
-            </select>
+            <div className="relative">
+              <select
+                id="ticket-category"
+                {...register("category")}
+                className="w-full appearance-none rounded-lg border border-slate-200 bg-white py-3 pl-4 pr-12 text-sm outline-none focus:border-blue-500"
+              >
+                <option value="">Select category</option>
+                <option value="Account">Account</option>
+                <option value="Billing">Billing</option>
+                <option value="Technical">Technical</option>
+                <option value="General">General</option>
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                size={18}
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-600"
+              />
+            </div>
 
             {errors.category && (
               <p className="mt-1 text-sm text-red-500">
@@ -158,16 +165,23 @@ const CreateTicketPage = () => {
               Priority
             </label>
 
-            <select
-              id="ticket-priority"
-              {...register("priority")}
-              className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
-            >
-              <option value="LOW">Low</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HIGH">High</option>
-              <option value="URGENT">Urgent</option>
-            </select>
+            <div className="relative">
+              <select
+                id="ticket-priority"
+                {...register("priority")}
+                className="w-full appearance-none rounded-lg border border-slate-200 bg-white py-3 pl-4 pr-12 text-sm outline-none focus:border-blue-500"
+              >
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+                <option value="URGENT">Urgent</option>
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                size={18}
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-600"
+              />
+            </div>
 
             {errors.priority && (
               <p className="mt-1 text-sm text-red-500">
