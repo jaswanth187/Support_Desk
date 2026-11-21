@@ -104,6 +104,7 @@ export const refresh = async (req: Request, res: Response) => {
         message: "Session refreshed successfully",
         data: {
             accessToken: result.accessToken,
+            user: result.user,
         },
     });
 }

@@ -2,6 +2,7 @@ import axios, {
     type AxiosError,
     type InternalAxiosRequestConfig,
 } from "axios";
+import type { ApiResponse, User } from "../types/auth.types";
 
 let accessToken: string | null = null;
 
@@ -98,19 +99,31 @@ export const setAccessToken = (token: string | null) => {
 
 // api.ts
 
-let refreshPromise: Promise<string> | null = null;
+interface RefreshSession {
+  accessToken: string;
+  user?: User;
+}
 
-export const refreshAccessToken = async (): Promise<string> => {
+let refreshPromise: Promise<RefreshSession> | null = null;
+
+export const refreshAccessToken = async (): Promise<RefreshSession> => {
   if (!refreshPromise) {
-    refreshPromise = refreshClient
-      .post("/auth/refresh")
-      .then((response) => {
-        const newToken: string = response.data.data.accessToken;
+    const refresh = () =>
+      refreshClient
+        .post<ApiResponse<RefreshSession>>("/auth/refresh")
+        .then((response) => {
+          const session = response.data.data;
 
-        setAccessToken(newToken);
+          setAccessToken(session.accessToken);
 
-        return newToken;
-      })
+          return session;
+        });
+
+    refreshPromise = (
+      typeof navigator !== "undefined" && navigator.locks
+        ? navigator.locks.request("supportdesk-refresh-token", refresh)
+        : refresh()
+    )
       .finally(() => {
         refreshPromise = null;
       });

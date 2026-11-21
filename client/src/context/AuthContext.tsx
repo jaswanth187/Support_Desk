@@ -48,11 +48,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const initializeAuth = async () => {
       try {
-        await refreshAccessToken();
+        const session = await refreshAccessToken();
 
         if (!isActive) return;
 
-        const currentUser = await authService.getCurrentUser();
+        const currentUser =
+          session.user ?? (await authService.getCurrentUser());
 
         if (isActive) {
           setUser(currentUser);

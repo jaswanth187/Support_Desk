@@ -128,6 +128,32 @@ describe("authentication services", () => {
     expect(authRepository.revokeAllRefreshTokens).not.toHaveBeenCalled();
   });
 
+  it("returns the authenticated user with a rotated refresh session", async () => {
+    vi.mocked(authRepository.findRefreshToken).mockResolvedValue({
+      id: "refresh-1",
+      tokenHash: "hash",
+      userId: user.id,
+      expiresAt: new Date("2030-01-01T00:00:00Z"),
+      revokedAt: null,
+      createdAt: new Date("2025-01-01T00:00:00Z"),
+    });
+    vi.mocked(authRepository.findUserById).mockResolvedValue(user);
+    vi.mocked(authRepository.rotateRefreshToken).mockResolvedValue(true);
+
+    const session = await refreshUserSession("valid-refresh-token");
+
+    expect(session.user).toEqual({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    });
+    expect(session).toHaveProperty("accessToken");
+    expect(session).toHaveProperty("refreshToken");
+  });
+
   it("does not change a password when the current password is incorrect", async () => {
     vi.mocked(authRepository.findUserById).mockResolvedValue(user);
     vi.mocked(passwordUtils.comparePassword).mockResolvedValue(false);

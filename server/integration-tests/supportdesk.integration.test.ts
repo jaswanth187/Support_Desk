@@ -223,6 +223,11 @@ describe("PostgreSQL-backed SupportDesk workflows", () => {
       accessToken: refreshResponse.body.data.accessToken,
       refreshCookie: getRefreshCookie(refreshResponse),
     };
+    expect(refreshResponse.body.data.user).toMatchObject({
+      id: customer.id,
+      email: customer.email,
+      role: "CUSTOMER",
+    });
 
     const [oldCustomerToken, newCustomerToken] = await Promise.all([
       prisma.refreshToken.findUnique({
