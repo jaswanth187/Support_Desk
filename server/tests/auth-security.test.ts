@@ -3,7 +3,7 @@ import request from "supertest";
 import { describe, expect, it } from "vitest";
 
 import app from "../src/app";
-import { createAuthRateLimiters } from "../src/middlwares/auth-rate-limit.middleware";
+import { createAuthRateLimiters } from "../src/middlewares/auth-rate-limit.middleware";
 import {
   getRefreshCookieClearOptions,
   getRefreshCookieOptions,

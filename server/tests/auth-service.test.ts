@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as authRepository from "../src/respositories/auth.repository";
+import * as authRepository from "../src/repositories/auth.repository";
 import * as passwordUtils from "../src/utils/password";
 import {
   changeCurrentUserPassword,
@@ -9,7 +9,7 @@ import {
 } from "../src/services/auth.service";
 import { hashRefreshToken } from "../src/utils/token";
 
-vi.mock("../src/respositories/auth.repository", () => ({
+vi.mock("../src/repositories/auth.repository", () => ({
   findUserByEmail: vi.fn(),
   createUser: vi.fn(),
   createRefreshToken: vi.fn(),

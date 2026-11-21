@@ -127,8 +127,8 @@ Support_Desk/
 │   ├── src/
 │   │   ├── config/
 │   │   ├── controllers/
-│   │   ├── middlwares/
-│   │   ├── respositories/
+│   │   ├── middlewares/
+│   │   ├── repositories/
 │   │   ├── routes/
 │   │   ├── services/
 │   │   ├── types/
@@ -151,7 +151,7 @@ All API endpoints are served through the `/api` base path.
 | Comments | Ticket comment listing and creation |
 | Dashboard | Role-based support statistics and analytics |
 
-Example protected route paths include:
+Example API routes include:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
@@ -286,7 +286,7 @@ Run backend integration tests with an isolated PostgreSQL database:
 
 ```bash
 cd server
-TEST_DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DATABASE npm run test:integration
+TEST_DATABASE_URL=postgresql://USER:PASSWORD@127.0.0.1:55432/supportdesk_test npm run test:integration
 ```
 
 Run frontend tests, lint, and production build:

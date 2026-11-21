@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import * as ticketResposity from "../respositories/ticket.repository"
+import * as ticketRepository from "../repositories/ticket.repository"
 import type { CreateTicketInput } from "../validators/ticket.validator";
 import type { Prisma, UserRole, TicketStatus,TicketPriority } from "../../generate/prisma/client"
 import type { TicketQueryInput } from "../validators/ticket-query.validator";
@@ -9,7 +9,7 @@ export const createCustomerTicket = async (data: CreateTicketInput, customerId: 
     const suffix = randomBytes(4).toString("hex").toUpperCase();
 
     const ticketNumber = `SD-${Date.now()}-${suffix}`;
-    return ticketResposity.createTicket(data, customerId, ticketNumber);
+    return ticketRepository.createTicket(data, customerId, ticketNumber);
 }
 
 export const getTicketsForUser = async (
@@ -68,7 +68,7 @@ export const getTicketsForUser = async (
         [filters.sortBy]: filters.sortOrder,
     };
 
-    const { tickets, total } = await ticketResposity.getTickets(
+    const { tickets, total } = await ticketRepository.getTickets(
         where,
         skip,
         filters.limit,
@@ -105,7 +105,7 @@ export const getTicketDetails = async (
         })
     }
 
-    const ticket = await ticketResposity.getTicketById(where);
+    const ticket = await ticketRepository.getTicketById(where);
 
     if (!ticket) {
         throw new AppError(404, "Ticket not found");
@@ -136,7 +136,7 @@ export const getCommentsForTicket = async (
     role: UserRole,
 ) => {
     const where = buildTicketAccessWhere(ticketId, userId, role);
-    const result = await ticketResposity.getTicketComments(where);
+    const result = await ticketRepository.getTicketComments(where);
 
     if (!result) {
         throw new AppError(404, "Ticket not found");
@@ -153,7 +153,7 @@ export const addCommentToTicket = async (
 ) => {
     const where = buildTicketAccessWhere(ticketId, userId, role);
 
-    const result = await ticketResposity.createTicketComment(where, userId, message);
+    const result = await ticketRepository.createTicketComment(where, userId, message);
     if (result.kind === "NOT_FOUND") {
         throw new AppError(404, "Ticket not found")
     }
@@ -169,7 +169,7 @@ export const assignTicketToAgent = async (
   assignedAgentId: string | null,
   changedById: string
 ) => {
-  const result = await ticketResposity.assignTicket(
+  const result = await ticketRepository.assignTicket(
     ticketId,
     assignedAgentId,
     changedById
@@ -207,7 +207,7 @@ export const changeTicketStatus = async (
   role: "ADMIN" | "AGENT",
   status: TicketStatus
 ) => {
-  const result = await ticketResposity.updateTicketStatusWithHistory(
+  const result = await ticketRepository.updateTicketStatusWithHistory(
     ticketId,
     userId,
     role,
@@ -232,7 +232,7 @@ export const changeTicketPriority = async (
   role: "ADMIN" | "AGENT",
   priority: TicketPriority
 ) => {
-  const result = await ticketResposity.updateTicketPriorityWithHistory(
+  const result = await ticketRepository.updateTicketPriorityWithHistory(
     ticketId,
     userId,
     role,

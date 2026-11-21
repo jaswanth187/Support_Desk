@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlwares/authenticate";
-import { authorize } from "../middlwares/authorize.js";
+import { authenticate } from "../middlewares/authenticate";
+import { authorize } from "../middlewares/authorize.js";
 
 import {
   createAgentController,

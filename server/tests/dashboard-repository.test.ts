@@ -20,7 +20,7 @@ vi.mock("../src/config/prisma.js", () => ({
   default: mocks.prisma,
 }));
 
-import { getDashboardData } from "../src/respositories/dashboard.respository.js";
+import { getDashboardData } from "../src/repositories/dashboard.repository.js";
 
 describe("dashboard repository", () => {
   beforeEach(() => {

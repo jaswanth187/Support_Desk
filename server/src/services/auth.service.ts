@@ -4,7 +4,7 @@ import type {
     RegisterInput,
     UpdateProfileInput,
 } from "../validators/auth.validator"
-import { findUserByEmail, createUser, createRefreshToken, findRefreshToken, rotateRefreshToken, revokeAllRefreshTokens, findUserById, revokeRefreshTokenForUser, updateUserPasswordAndRevokeSessions, updateUserProfile } from "../respositories/auth.repository"
+import { findUserByEmail, createUser, createRefreshToken, findRefreshToken, rotateRefreshToken, revokeAllRefreshTokens, findUserById, revokeRefreshTokenForUser, updateUserPasswordAndRevokeSessions, updateUserProfile } from "../repositories/auth.repository"
 import { hashPassword, comparePassword } from "../utils/password"
 import { AppError } from "../utils/app-error"
 import { generateAccessToken, generateRefreshToken, getRefreshTokenExpiry, hashRefreshToken } from "../utils/token"

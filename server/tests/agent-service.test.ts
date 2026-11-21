@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as agentRepository from "../src/respositories/agent.repository.js";
+import * as agentRepository from "../src/repositories/agent.repository.js";
 import {
   createAgent,
   getAllAgents,
@@ -8,7 +8,7 @@ import {
 } from "../src/services/agent.service.js";
 import * as passwordUtils from "../src/utils/password.js";
 
-vi.mock("../src/respositories/agent.repository.js", () => ({
+vi.mock("../src/repositories/agent.repository.js", () => ({
   findUserByEmail: vi.fn(),
   createAgent: vi.fn(),
   getAgentsWithWorkloads: vi.fn(),

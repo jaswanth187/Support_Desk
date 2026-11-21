@@ -2,7 +2,7 @@ import express from "express";
 import request from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { errorMiddlware } from "../src/middlwares/error.middleware";
+import { errorMiddlware } from "../src/middlewares/error.middleware";
 import { AppError } from "../src/utils/app-error";
 
 const app = express();

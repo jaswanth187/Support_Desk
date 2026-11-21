@@ -22,7 +22,7 @@ vi.mock("../src/config/prisma", () => ({
   default: mocks.prisma,
 }));
 
-import { assignTicket } from "../src/respositories/ticket.repository";
+import { assignTicket } from "../src/repositories/ticket.repository";
 
 describe("ticket assignment repository", () => {
   beforeEach(() => {

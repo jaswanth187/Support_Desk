@@ -1,6 +1,6 @@
 import type { TicketStatus } from "../../generate/prisma/client.js";
 
-import * as agentRepository from "../respositories/agent.repository.js";
+import * as agentRepository from "../repositories/agent.repository.js";
 import { AppError } from "../utils/app-error.js";
 import { hashPassword } from "../utils/password.js";
 import type { CreateAgentInput } from "../validators/agent.validator.js";

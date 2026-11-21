@@ -4,7 +4,7 @@ import healthRoutes from "./routes/health.routes"
 import cookieParser from "cookie-parser";
 import {env} from "./config/env"
 import authRoutes from "./routes/auth.routes"
-import { errorMiddlware } from "./middlwares/error.middleware";
+import { errorMiddlware } from "./middlewares/error.middleware";
 import protectedRoutes from "./routes/protected.routes.js";
 import ticketRoutes from "./routes/ticket.routes"
 import dashboardRoutes from "./routes/dashboard.routes"

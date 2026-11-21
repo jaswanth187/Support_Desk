@@ -4,8 +4,8 @@ import request from "supertest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { env } from "../src/config/env";
-import { errorMiddlware } from "../src/middlwares/error.middleware";
-import { findUserAuthStatusById } from "../src/respositories/auth.repository";
+import { errorMiddlware } from "../src/middlewares/error.middleware";
+import { findUserAuthStatusById } from "../src/repositories/auth.repository";
 import { AppError } from "../src/utils/app-error";
 import {
   createAgent,
@@ -14,7 +14,7 @@ import {
   updateAgentStatus,
 } from "../src/services/agent.service.js";
 
-vi.mock("../src/respositories/auth.repository", () => ({
+vi.mock("../src/repositories/auth.repository", () => ({
   findUserAuthStatusById: vi.fn(),
 }));
 

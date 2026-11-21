@@ -8,9 +8,9 @@ import {
   updateProfile,
   changePassword,
 } from "../controllers/auth.controller"
-import { authenticate } from "../middlwares/authenticate";
-import { createAuthRateLimiters } from "../middlwares/auth-rate-limit.middleware";
-import { verifyClientOrigin } from "../middlwares/verify-client-origin.middleware";
+import { authenticate } from "../middlewares/authenticate";
+import { createAuthRateLimiters } from "../middlewares/auth-rate-limit.middleware";
+import { verifyClientOrigin } from "../middlewares/verify-client-origin.middleware";
 
 const router = Router();
 const {

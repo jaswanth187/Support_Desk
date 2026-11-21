@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { env } from "../config/env";
 import { AppError } from "../utils/app-error";
-import { findUserAuthStatusById } from "../respositories/auth.repository";
+import { findUserAuthStatusById } from "../repositories/auth.repository";
 
 const allowedRoles = ["ADMIN", "AGENT", "CUSTOMER"] as const;
 

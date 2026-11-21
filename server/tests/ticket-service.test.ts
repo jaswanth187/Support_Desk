@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as ticketRepository from "../src/respositories/ticket.repository";
+import * as ticketRepository from "../src/repositories/ticket.repository";
 import {
   addCommentToTicket,
   assignTicketToAgent,
@@ -9,7 +9,7 @@ import {
   getTicketsForUser,
 } from "../src/services/ticket.service";
 
-vi.mock("../src/respositories/ticket.repository", () => ({
+vi.mock("../src/repositories/ticket.repository", () => ({
   createTicket: vi.fn(),
   getTickets: vi.fn(),
   getTicketById: vi.fn(),

@@ -26,7 +26,7 @@ vi.mock("../src/config/prisma.js", () => ({
   default: mocks.prisma,
 }));
 
-import { updateAgentStatus } from "../src/respositories/agent.repository.js";
+import { updateAgentStatus } from "../src/repositories/agent.repository.js";
 
 describe("agent status repository", () => {
   beforeEach(() => {
