@@ -4,7 +4,7 @@ import request from "supertest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { env } from "../src/config/env";
-import { errorMiddlware } from "../src/middlewares/error.middleware";
+import { errorMiddleware } from "../src/middlewares/error.middleware";
 import { findUserAuthStatusById } from "../src/repositories/auth.repository";
 import { AppError } from "../src/utils/app-error";
 import {
@@ -30,7 +30,7 @@ import agentRoutes from "../src/routes/agent.routes.js";
 const app = express();
 app.use(express.json());
 app.use("/api/agents", agentRoutes);
-app.use(errorMiddlware);
+app.use(errorMiddleware);
 
 const tokenFor = (id: string, role: "ADMIN" | "AGENT" | "CUSTOMER") =>
   jwt.sign({ role }, env.JWT_ACCESS_SECRET, {

@@ -2,7 +2,7 @@ import express from "express";
 import request from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { errorMiddlware } from "../src/middlewares/error.middleware";
+import { errorMiddleware } from "../src/middlewares/error.middleware";
 import { AppError } from "../src/utils/app-error";
 
 const app = express();
@@ -12,7 +12,7 @@ app.get("/known-error", () => {
 app.get("/unexpected-error", () => {
   throw new Error("secret-bearing internal details");
 });
-app.use(errorMiddlware);
+app.use(errorMiddleware);
 
 afterEach(() => {
   vi.restoreAllMocks();

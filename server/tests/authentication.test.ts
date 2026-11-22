@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { env } from "../src/config/env";
 import { authenticate } from "../src/middlewares/authenticate";
-import { errorMiddlware } from "../src/middlewares/error.middleware";
+import { errorMiddleware } from "../src/middlewares/error.middleware";
 import { findUserAuthStatusById } from "../src/repositories/auth.repository";
 
 vi.mock("../src/repositories/auth.repository", () => ({
@@ -18,7 +18,7 @@ const app = express();
 app.get("/private", authenticate, (req, res) => {
   res.json({ user: req.user });
 });
-app.use(errorMiddlware);
+app.use(errorMiddleware);
 
 const createToken = (
   id: string,

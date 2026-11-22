@@ -202,7 +202,7 @@ npm install
 
 ### 3. Configure the Backend
 
-Create `server/.env` from `server/.env.example` if an example file is available, or use the variables below:
+Copy `server/.env.example` to `server/.env` and fill in the values below:
 
 ```dotenv
 NODE_ENV=development

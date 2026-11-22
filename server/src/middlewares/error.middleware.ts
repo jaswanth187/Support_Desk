@@ -3,7 +3,7 @@ import { Prisma } from "../../generate/prisma/client"
 import { AppError } from "../utils/app-error"
 
 
-export const errorMiddlware = (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
+export const errorMiddleware = (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
 
     if (error instanceof AppError) {
         return res.status(error.statusCode).json({
